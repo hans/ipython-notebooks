@@ -30,6 +30,20 @@ class VariableStore(object):
         self.default_initializer = default_initializer
         self.vars = {}
         
+    @classmethod
+    def snapshot(cls, other, name=None):
+        """
+        Create a new `VariableStore` by taking a snapshot of another `VariableStore`.
+        
+        All variables in the other store will be cloned and put into a new instance.
+        """
+        name = name or "%s_snapshot" % other.prefix
+        vs = cls(name)
+        for param_name, param_var in other.vars.iteritems():
+            vs.vars[param_name] = theano.shared(param_var.get_value(),
+                                                borrow=False)
+        return vs
+        
     def add_param(self, name, shape, initializer=None):
         if initializer is None:
             initializer = self.default_initializer
