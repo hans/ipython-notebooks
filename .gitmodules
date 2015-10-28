@@ -1,0 +1,3 @@
+[submodule "lib/tdlearn"]
+	path = lib/tdlearn
+	url = git://github.com/hans/tdlearn.git
